@@ -43,6 +43,7 @@ export function ChatInterface() {
   }, [input]);
 
   const handleSend = async () => {
+    console.log('handleSend called', { input: input.trim(), isLoading });
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -217,7 +218,7 @@ export function ChatInterface() {
       {/* Input area */}
       <div className="border-t border-zinc-800 bg-[#0a0a0b] px-4 py-4">
         <div className="max-w-4xl mx-auto">
-          <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl focus-within:border-zinc-700 focus-within:ring-1 focus-within:ring-zinc-700 transition-all">
+          <div className="flex gap-2 items-end bg-zinc-900 border border-zinc-800 rounded-2xl focus-within:border-zinc-700 focus-within:ring-1 focus-within:ring-zinc-700 transition-all p-2">
             <textarea
               ref={textareaRef}
               value={input}
@@ -225,18 +226,22 @@ export function ChatInterface() {
               onKeyDown={handleKeyDown}
               placeholder="Ask about Hyundai/Genesis vehicles..."
               rows={1}
-              className="w-full bg-transparent px-4 py-3.5 pr-12 text-sm text-zinc-200 placeholder:text-zinc-600 resize-none focus:outline-none max-h-[200px]"
+              className="flex-1 bg-transparent px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 resize-none focus:outline-none max-h-[200px] min-h-[40px]"
               disabled={isLoading}
             />
             <button
-              onClick={handleSend}
+              onClick={() => {
+                console.log('Button clicked');
+                handleSend();
+              }}
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 bottom-2 p-2 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white rounded-xl transition-all"
+              className="shrink-0 p-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-white rounded-xl transition-all"
+              style={{ cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed' }}
             >
               {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                <Send className="w-4 h-4" />
+                <Send className="w-5 h-5" />
               )}
             </button>
           </div>
